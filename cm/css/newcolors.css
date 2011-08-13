@@ -1,0 +1,76 @@
+html {
+  cursor: text;
+}
+
+.editbox {
+  margin: .4em;
+  padding: 0;
+	font-family: consolas, 'lucida console', monospace !important;
+	font-weight: normal;
+	background-color: #262822;
+	background-color: #262822 !important;
+	font-size: 13px !important;
+    color: #eee;
+	line-height: 17px;
+	/*
+	text-shadow: rgba(10, 10, 10, 1) 0px 1px 1px;
+	*/
+
+}
+
+.editbox, x:-moz-any-link { font-weight: normal; } /* FireFox 2 */
+.editbox, x:-moz-any-link, x:default { font-weight: normal; } /* FireFox 3 */
+
+
+.editbox p {
+  margin: 0;
+}
+
+span.xml-tagname {
+  color: #eee;
+}
+
+/* < > */
+span.xml-punctuation {
+  color: lightskyblue;
+}
+
+/* "...string..." */
+span.xml-attribute {
+  color: #E5DC78;
+	color: yellowgreen;
+}
+
+
+/* class id src */
+span.xml-attname {
+  color: gold;
+}
+
+span.xml-comment {
+  color: white;
+	background-color: #444;
+	opacity: 0.4;
+}
+
+span.xml-cdata {
+  color: #777;
+}
+
+span.xml-processing {
+  color: red;
+}
+
+span.xml-entity {
+  color: #A22;
+}
+
+span.xml-error {
+
+  color: white !important;
+  background-color: #c00;
+}
+
+span.xml-text {
+  color: #eee;
+}
