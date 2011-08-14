@@ -4,5 +4,13 @@ $(document).ready(function(){
 
 	editor.init();
 
+	filetray.init($('#filetrayui'));
 	filetray.listFiles();
 });
+
+var ui = {
+
+	model: {
+		files: [],
+	},
+}

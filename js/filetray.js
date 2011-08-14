@@ -1,5 +1,11 @@
-
 var filetray = {
+
+	ui: {},
+
+	init: function(uielement)
+	{
+		filetray.ui = uielement;
+	},
 
 	listFiles: function()
 	{
@@ -8,7 +14,7 @@ var filetray = {
 			r = r.replace('. <br/>', '');
 			r = r.replace('.. <br/>', '');
 
-			$('.filetray').html(r);
+			filetray.ui.html(r);
 
 		});
 	},
