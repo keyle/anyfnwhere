@@ -1,4 +1,3 @@
-
 var editor = {
 
 	cm: {},

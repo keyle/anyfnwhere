@@ -128,8 +128,8 @@
 			<textarea id="txtcode"></textarea>
 		</div>
 
-		<div id='filetrayui' class='filetray' data-bind=''>
-			<div>{}</div>
+		<div id='filetrayui' class='filetray' data-bind='files'>
+			<div data-repeater='files'>{name}.{ext}</div>
 		</div>
 
 		<div class="tools">
