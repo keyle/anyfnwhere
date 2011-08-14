@@ -4,20 +4,25 @@
 		<title>file.html &mdash; ƒn</title>
 		<meta http-equiv="Content-type" content="text/html;charset=utf-8" />
 		<link rel="shortcut icon" href="./favicon.ico" />
-		<script type="text/javascript" src="jquery.min.js"></script>
-		<script type="text/javascript" src="jquery.hotkeys-0.7.9.min.js"></script> 
-		<script type="text/javascript" src="cm/js/codemirror.js"></script> 
-		
+		<script type="text/javascript" src="libs/jquery.min.js"></script>
+		<script type="text/javascript" src="libs/jquery.hotkeys-0.7.9.min.js"></script>
+		<script type="text/javascript" src="libs/knot.js"></script>
+		<script type="text/javascript" src="cm/js/codemirror.js"></script>
+		<script type="text/javascript" src="js/editor.js"></script>
+		<script type="text/javascript" src="js/filetray.js"></script>
+		<script type="text/javascript" src="js/progress.js"></script>
+		<script type="text/javascript" src="js/ui.js"></script>
+
 		<style>
 			body, html {
 				padding: 0px;
 				margin: 0px;
 				height: 100%;
 				overflow: hidden;
-				
+
 				background-color: #262822 !important;
 			}
-			
+
 			.CodeMirror-line-numbers
 			{
 				background-color: #262822;
@@ -30,24 +35,24 @@
 				padding-left: 5px;
 				min-width: 14px;
 			}
-			
+
 			.CodeMirror-line-numbers div {
 				line-height: 17px;
 			}
-			
+
 			.CodeMirror-wrapping
 			{
 				width: 100%;
 				background-color: #262822;
 			}
-			
+
 			.codearea {
 				margin-left: 220px;
 			}
-			
+
 			.codeframe {
 			}
-			
+
 			.filetray {
 				font-family: Calibri, Helvetica, Arial, sans-serif;
 				background: rgb(214, 221, 230);
@@ -63,7 +68,7 @@
 				line-height: 1.7em;
 				text-shadow: rgba(255, 255, 255, 1.0) 0px 1px 1px;
 			}
-			
+
 			.tools {
 				position: fixed; right: 35px; bottom: 35px;
 				font-family: Calibri, Helvetica, Arial, sans-serif;
@@ -71,7 +76,7 @@
 				color: white;
 				background-color: #262822;
 			}
-			
+
 			.pro {
 				position: fixed; right: 0px; top: 0px;
 				font-family: Calibri, Helvetica, Arial, sans-serif;
@@ -82,7 +87,7 @@
 				background-color: #444;
 				text-shadow: rgba(0, 0, 0, 0.3) 0px 1px 1px;
 			}
-			
+
 			.btn {
 				display: block;
 				float: left;
@@ -91,12 +96,12 @@
 				min-width: 46px;
 				margin-right: 4px;
 				border: 2px solid white;
-				-moz-border-radius: 8px; 
+				-moz-border-radius: 8px;
 				-webkit-border-radius: 8px;
 				cursor: pointer;
 				cursor: hand;
 			}
-			
+
 			.logo {
 				display: block;
 				float: left;
@@ -111,21 +116,21 @@
 			}
 			.logo, x:-moz-any-link { font-weight: normal; } /* FireFox 2 */
 			.logo, x:-moz-any-link, x:default { font-weight: normal; } /* FireFox 3 */
-			
+
 			textarea:focus { outline: none !important; }
-			
+
 			a, a:hover, a:visited, a:active {color: inherit !important; text-decoration: none;}
 		</style>
 	</head>
 	<body bgcolor='#262822'>
-		
+
 
 <div class='codearea'>
-	<textarea id="editor"></textarea>
+	<textarea id="txtcode"></textarea>
 </div>
 
-<div class='filetray'>
-	Loading...
+<div class='filetray' data-bind=''>
+	<div>{}</div>
 </div>
 
 <div class="tools">
@@ -133,130 +138,11 @@
 	<!--div class="btn" id="btnOpen"><u>O</u>pen</div>
 	<div class="btn" id="btnSave"><u>S</u>ave</div>
 	<div class="btn" id="btnFTP">F<u>T</u>P</div-->
-	
-
 
 </div>
-<div id="progress" class='pro'>&nbsp;</div>
+<div id="progressui" class='pro'>&nbsp;</div>
 
 <script type="text/javascript">
-
-$(document).ready(function() {
-
-	var editor = CodeMirror.fromTextArea('editor', {
-    height: "100%",
-    tabMode: "spaces",
-    indentUnit: 4,
-    parserfile: [
-    	"parsexml.js", "parsecss.js", "tokenizejavascript.js", 
-    	"parsejavascript.js", 
-    	"../contrib/php/js/tokenizephp.js", 
-    	"../contrib/php/js/parsephp.js",
-        "../contrib/php/js/parsephphtmlmixed.js"
-    ],
-	stylesheet: [
-	"cm/css/newcolors.css", 
-	"cm/css/jscolors.css", 
-	"cm/css/csscolors.css", 
-	"cm/contrib/php/css/phpcolors.css"
-	],
-    path: "cm/js/",
-    continuousScanning: 250,
-    passDelay: 25,
-    lineNumbers: true,
-    iframeClass: 'codeframe',
-  });
-	
-	$(editor.win).focus();
-	
-	
-	var isShrtCut = false;
-	var metaType = 0;
-	
-	
-	$(editor.win).keydown(function (e) {
-	    
-		var kc = (e.keyCode ? e.keyCode : e.which);
-		var isShortCut = false;
-	
-	    if(e.metaKey||e.ctrlKey) 
-	    {
-	    	if(kc != 16) // avoid shift
-	    		isShortCut=true;
-	    }
-	    
-		if(kc==79 && isShortCut)
-		{
-			open();
-			
-			e.stopPropagation();
-			e.preventDefault();
-			isShrtCut=false;
-			return false;
-		}
-	
-	    if(kc == 83 && isShortCut)
-	    {
-			save();
-			
-			e.stopPropagation();
-			e.preventDefault();
-			isShrtCut=false;
-			return false;
-		}
-		
-	});
-	
-	
-	$('#btnSave').click(save);
-	
-	listFiles();
-	
-	function listFiles()
-	{
-		$.get('_listfiles.php', function(r){
-			
-			r = r.replace('. <br/>', '');
-			r = r.replace('.. <br/>', '');
-			
-			$('.filetray').html(r);
-			
-			debugger;
-			
-		});
-	}
-	
-	function open()
-	{
-		
-	}
-	
-	function save()
-	{
-		showProgress('Saving file.html ...');
-		
-		$.post('_savefile.php', { 
-			targetfile: 'target.html', 
-			content: editor.getCode()
-			}, function(r) {
-			
-			hideProgress();
-		});
-		
-	}
-	
-	function showProgress(str)
-	{
-		$('#progress').html(str);
-		$('#progress').show();
-		
-	}
-	function hideProgress(str)
-	{
-		$('#progress').hide();
-	}
-	
-});
 
 </script>
 	</body>
