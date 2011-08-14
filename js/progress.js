@@ -5,6 +5,7 @@ var progress = {
 	init: function(uielement)
 	{
 		progress.ui = uielement;
+		$(progress.ui).hide();
 	},
 
 	showProgress: function(stringMessage)

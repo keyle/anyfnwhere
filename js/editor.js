@@ -28,9 +28,10 @@ var editor = {
 			iframeClass: 'codeframe',
 		});
 
-		$(editor.cm.win).focus();
-
-		editor.setShortcuts();
+		setTimeout(function(){
+			$(editor.cm.win).focus();
+			editor.setShortcuts();
+		}, 250);
 	},
 
 	setShortcuts: function()

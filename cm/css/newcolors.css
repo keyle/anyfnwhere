@@ -5,12 +5,12 @@ html {
 .editbox {
   margin: .4em;
   padding: 0;
-	font-family: consolas, 'lucida console', monospace !important;
+	font-family: menlo, consolas, 'lucida console', monospace !important;
 	font-weight: normal;
 	background-color: #262822;
 	background-color: #262822 !important;
-	font-size: 13px !important;
-    color: #eee;
+	font-size: 12px !important;
+  color: #fff;
 	line-height: 17px;
 	/*
 	text-shadow: rgba(10, 10, 10, 1) 0px 1px 1px;

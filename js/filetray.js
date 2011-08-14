@@ -11,10 +11,11 @@ var filetray = {
 	{
 		$.get('php/_listfiles.php', function(r){
 
-			r = r.replace('. <br/>', '');
-			r = r.replace('.. <br/>', '');
+			$(document).model().files = r;
 
-			filetray.ui.html(r);
+			// remove .. & .
+			//$(document).model().files.shift();
+			$(document).model().files.shift();
 
 		});
 	},
